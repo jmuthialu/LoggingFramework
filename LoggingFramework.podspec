@@ -1,4 +1,3 @@
-
 Pod::Spec.new do |s|
   s.name              = 'LoggingFramework'
   s.version           = '0.0.1'
@@ -9,5 +8,5 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.ios.deployment_target = '13.0'
   s.source_files = 'source/**/*.{swift}'
-  S.swift_version = '5.0'
-  end
+  s.swift_version = '5.0'
+ end

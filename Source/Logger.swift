@@ -7,8 +7,8 @@
 
 import Foundation
 
-class Logger {
-    static func log() {
+public class Logger {
+    public static func log() {
         print("Jay from FW")
     }
 }
