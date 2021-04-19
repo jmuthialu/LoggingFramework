@@ -4,5 +4,9 @@
 ```
 pod 'LoggingFramework', :path => '../'
 ```
+$ pod spec lint
 
+// Create a seperate pod spec repo that is not LoggingFramework repo
+$ pod repo add LoggingPodSpecs git@github.com:jmuthialu/PodSpecRepo.git
+$ pod repo push LoggingPodSpecs LoggingFramework.podspec --allow-warnings 
 

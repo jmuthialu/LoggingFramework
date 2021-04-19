@@ -9,6 +9,6 @@ import Foundation
 
 public class Logger {
     public static func log() {
-        print("Jay from FW - 0.0.2")
+        print("Jay from FW")
     }
 }

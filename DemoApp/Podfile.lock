@@ -2,15 +2,15 @@ PODS:
   - LoggingFramework (0.0.1)
 
 DEPENDENCIES:
-  - LoggingFramework (from `../`)
+  - LoggingFramework (= 0.0.1)
 
-EXTERNAL SOURCES:
-  LoggingFramework:
-    :path: "../"
+SPEC REPOS:
+  "git@github.com:jmuthialu/PodSpecRepo.git":
+    - LoggingFramework
 
 SPEC CHECKSUMS:
-  LoggingFramework: e4db1862de210e5c868e415559af623c09c1244a
+  LoggingFramework: 6eedb74a21b89b1be5ab97050e878fd7e8aa21cb
 
-PODFILE CHECKSUM: 7c4ceeb7f063a54d18ecfc51dadbacb1cf7548b6
+PODFILE CHECKSUM: 22c56e0e63128b94a974bbc9e0b66ed837eef4b9
 
 COCOAPODS: 1.10.1
