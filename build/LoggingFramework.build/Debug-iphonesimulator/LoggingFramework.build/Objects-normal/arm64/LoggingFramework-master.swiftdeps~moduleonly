@@ -1,5 +1,0 @@
-version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
-options: "9110433ad3a30c2b1ba0b9136efb3e62"
-build_time: [1618847473, 145201000]
-inputs:
-  "/Users/jaymuthialu/Desktop/2-PrivatePodBinary/LoggingFramework/Source/Logger.swift": [1618839706, 556888938]
