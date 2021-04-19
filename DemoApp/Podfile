@@ -10,6 +10,6 @@ target 'DemoApp' do
 # pod 'LoggingFramework', :path => '../'
 
 # This will create non editable pod
-  pod 'LoggingFramework', '0.0.2'
+  pod 'LoggingFramework', '0.0.3'
 
 end
