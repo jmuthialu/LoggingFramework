@@ -1,0 +1,13 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/jaymuthialu/Library/Developer/Xcode/DerivedData/LoggingFramework-dpzkevxqzvgaoafnjxteodlupyqe/Build/Products/Debug-iphonesimulator/LoggingFramework.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/jaymuthialu/Desktop/2-PrivatePodBinary/LoggingFramework/build/LoggingFramework.build/Debug-iphonesimulator/LoggingFramework.build/unextended-module.modulemap",
+    }]
+  }]
+}

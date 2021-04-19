@@ -16,6 +16,9 @@
 		B8D1730F262CEDB000C4DF1D /* LoggingFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoggingFramework.h; sourceTree = "<group>"; };
 		B8D17310262CEDB000C4DF1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8D17318262CEDC100C4DF1D /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		B8F3447B262DDE3800C96E04 /* UniversalFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UniversalFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8F3447D262DDE3800C96E04 /* UniversalFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UniversalFramework.h; sourceTree = "<group>"; };
+		B8F3447E262DDE3800C96E04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +36,7 @@
 			isa = PBXGroup;
 			children = (
 				B8D1730E262CEDB000C4DF1D /* Source */,
+				B8F3447C262DDE3800C96E04 /* UniversalFramework */,
 				B8D1730D262CEDB000C4DF1D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				B8D1730C262CEDB000C4DF1D /* LoggingFramework.framework */,
+				B8F3447B262DDE3800C96E04 /* UniversalFramework.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,6 +58,15 @@
 				B8D17318262CEDC100C4DF1D /* Logger.swift */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		B8F3447C262DDE3800C96E04 /* UniversalFramework */ = {
+			isa = PBXGroup;
+			children = (
+				B8F3447D262DDE3800C96E04 /* UniversalFramework.h */,
+				B8F3447E262DDE3800C96E04 /* Info.plist */,
+			);
+			path = UniversalFramework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +101,21 @@
 			productReference = B8D1730C262CEDB000C4DF1D /* LoggingFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B8F3447A262DDE3800C96E04 /* UniversalFramework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8F34482262DDE3800C96E04 /* Build configuration list for PBXNativeTarget "UniversalFramework" */;
+			buildPhases = (
+				B8F34485262DDE4700C96E04 /* Creating Universal Framework */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UniversalFramework;
+			productName = UniversalFramework;
+			productReference = B8F3447B262DDE3800C96E04 /* UniversalFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -98,6 +127,9 @@
 					B8D1730B262CEDB000C4DF1D = {
 						CreatedOnToolsVersion = 12.4;
 						LastSwiftMigration = 1240;
+					};
+					B8F3447A262DDE3800C96E04 = {
+						CreatedOnToolsVersion = 12.4;
 					};
 				};
 			};
@@ -115,6 +147,7 @@
 			projectRoot = "";
 			targets = (
 				B8D1730B262CEDB000C4DF1D /* LoggingFramework */,
+				B8F3447A262DDE3800C96E04 /* UniversalFramework */,
 			);
 		};
 /* End PBXProject section */
@@ -128,6 +161,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B8F34485262DDE4700C96E04 /* Creating Universal Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Creating Universal Framework";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\necho ${PROJECT_NAME} # TestFramework\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Step 5. Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\" \"${PROJECT_DIR}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${PROJECT_DIR}\"\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B8D17308262CEDB000C4DF1D /* Sources */ = {
@@ -314,6 +368,54 @@
 			};
 			name = Release;
 		};
+		B8F34480262DDE3800C96E04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = QP8Z378EKD;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = UniversalFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jay.UniversalFramework;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B8F34481262DDE3800C96E04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = QP8Z378EKD;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = UniversalFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jay.UniversalFramework;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -331,6 +433,15 @@
 			buildConfigurations = (
 				B8D17315262CEDB000C4DF1D /* Debug */,
 				B8D17316262CEDB000C4DF1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8F34482262DDE3800C96E04 /* Build configuration list for PBXNativeTarget "UniversalFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8F34480262DDE3800C96E04 /* Debug */,
+				B8F34481262DDE3800C96E04 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
